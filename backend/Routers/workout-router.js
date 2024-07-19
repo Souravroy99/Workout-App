@@ -1,31 +1,24 @@
-const express = require('express')
-const router = express.Router() 
-const work = require('../Controllers/workout-controller') ;
-const WorkoutMiddleware = require('../Middlewares/workout-middleware')
+const express = require('express');
+const router = express.Router(); 
+const work = require('../Controllers/workout-controller');
+const WorkoutMiddleware = require('../Middlewares/workout-middleware');
 
-
-// Get data from home page
-router.route('/').get(WorkoutMiddleware, work.home) ;
-
+// Home route with middleware
+router.get('/', WorkoutMiddleware, work.home);
 
 // Create a new workout
-router.route('/').post(work.createWorkout) ; 
-
+router.post('/create', work.createWorkout);
 
 // Fetch all workouts
-router.route('/a').get(work.getAllWorkouts) ; 
-
+router.get('/all', work.getAllWorkouts);
 
 // Fetch single workout by Id
-router.route('/:id').get(work.getWorkoutById) ;
-
+router.get('/:id', work.getWorkoutById);
 
 // Delete single workout by Id
-router.route('/delete/:id').delete(work.removeWorkoutById)
-
+router.delete('/:id', work.removeWorkoutById);
 
 // Update single workout by Id
-router.route('/update/:id').patch(work.updateWorkoutById)
+router.patch('/:id', work.updateWorkoutById);
 
-
-module.exports = router
+module.exports = router;

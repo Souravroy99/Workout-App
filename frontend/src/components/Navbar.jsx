@@ -9,6 +9,15 @@ const Navbar = () => {
                 <h1>Workout Buddy</h1>
             </NavLink>
 
+            <nav>
+              <div>
+
+                <NavLink to="/login">Log In</NavLink>
+                <NavLink to="/signup">Sign Up</NavLink>
+
+              </div>
+            </nav>
+
         </div>
     </header>
   )

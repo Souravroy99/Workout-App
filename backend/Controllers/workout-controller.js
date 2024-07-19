@@ -1,7 +1,6 @@
 const WorkoutModel = require('../Models/workout-model')
 const mongoose = require('mongoose')
 
-
 const home = async(req, res) => {
     try{
         res.status(200).json({msg: 'Welcome to the app'})
@@ -16,14 +15,25 @@ const home = async(req, res) => {
 
 // 1 Create/Add a new workout
 const createWorkout = async(req,res) => {
-    try{
-        const {title, reps, load} = req.body 
-        const workout = await WorkoutModel.create({title, reps, load})
 
-        res.status(200).json(workout) 
+    const {title, reps, load} = req.body 
+
+    let emptyFields = [] ;
+    if(!title) emptyFields.push('title') ;
+    if(!reps) emptyFields.push('reps') ;
+    if(!load) emptyFields.push('load') ;
+
+    if(emptyFields.length > 0) {
+        res.status(400).json({error: `Please fill all the fields`, emptyFields})
+    }
+
+    try{
+        const workOut = await WorkoutModel.create({title, reps, load})
+
+        res.status(200).json(workOut) 
     }
     catch(error){
-        console.log(`Auth-Controller CREATEDWORKOUT ERROR: ${error}`)
+        console.log(`Auth-Controller CREATE_WORKOUT ERROR: ${error}`)
         res.status(400).json({error: error.message}) 
         // next(error)
     }
@@ -34,11 +44,10 @@ const createWorkout = async(req,res) => {
 const getAllWorkouts = async(req,res) => {
     try{
         const allWorkouts = await WorkoutModel.find().sort({createdAt: -1}) 
-
         res.status(200).json(allWorkouts) 
     }
     catch(error){
-        console.log(`Auth-Controller GETALLWORKOUTS ERROR: ${error}`)
+        console.log(`Auth-Controller GET_ALL_WORKOUTS ERROR: ${error}`)
         res.status(400).json({error: error.message})
         // next(error)
     }
@@ -64,7 +73,7 @@ const getWorkoutById = async(req,res) => {
         res.status(200).json(singleWorkoutById)
     }
     catch(error){
-        console.log(`Auth-Controller GETWORKOUTBYID ERROR: ${error}`)
+        console.log(`Auth-Controller GET_WORKOUT_BY_ID ERROR: ${error}`)
         res.status(400).json({error: error.message})
         // next(error)
     }
@@ -73,7 +82,7 @@ const getWorkoutById = async(req,res) => {
 
 // 4 Delete workout by ID
 const removeWorkoutById = async(req,res) => {
-    try{
+    try {
         const id = req.params.id 
         
         if(!mongoose.Types.ObjectId.isValid(id)) {
@@ -83,8 +92,8 @@ const removeWorkoutById = async(req,res) => {
         const removedWorkout = await WorkoutModel.findOneAndDelete({_id:id}) 
         res.status(200).json(removedWorkout)
     }
-    catch(error){
-        console.log(`Auth-Controller REMOVEWORKOUTBYID ERROR: ${error}`)
+    catch(error) {
+        console.log(`Auth-Controller REMOVE_WORKOUT_BY_ID ERROR: ${error}`)
         res.status(400).json({error: error.message})
         // next(error)
     }
@@ -93,7 +102,7 @@ const removeWorkoutById = async(req,res) => {
 
 // 5 Update Workout by Id
 const updateWorkoutById = async(req,res) => {
-    try{
+    try {
         const id = req.params.id 
         
         if(!mongoose.Types.ObjectId.isValid(id)) {
@@ -106,8 +115,8 @@ const updateWorkoutById = async(req,res) => {
 
         res.status(200).json(updatedWorkout)
     }
-    catch(error){
-        console.log(`Auth-Controller UPDATEWORKOUTBYID ERROR: ${error}`)
+    catch(error) {
+        console.log(`Auth-Controller UPDATE_WORKOUT_BY_ID ERROR: ${error}`)
         res.status(400).json({error: error.message})  
         // next(error)
     }

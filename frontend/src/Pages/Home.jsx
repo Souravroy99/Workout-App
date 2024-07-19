@@ -1,48 +1,55 @@
-import { useState, useEffect } from "react"
+import { useEffect } from "react"
 import WorkoutDetails from "../components/WorkoutDetails";
 import WorkoutForm from "../components/WorkoutForm";
+import { useWorkoutContext } from "../context/WorkoutContext";
 
 
 const Home = () => {
 
-  const [workouts, setWorkouts] = useState([]) ;
+  const {workouts, dispatch} = useWorkoutContext() ;
 
   const fetchWorkouts = async() => {
-    try{
-
-      const response = await fetch(`/api/workouts`, { // Using "proxy"('package.json' file) instead of "cors"
-        method:"GET"
-      })
-      
-      const data = await response.json() ;
-      
-      if(response.ok) {
-        setWorkouts(data) ;
+    try {
+        const response = await fetch(`https://localhost:4000/api/workouts/all`, { 
+          method:"GET"
+        })
+        
+        const data = await response.json() ;
+        
+        if(response.ok) {
+            dispatch({type: "SET_WORKOUTS", payload: data}) ;
+        }
+        else {
+            console.log(`fetchWorkouts Response is not ok`)
+        }
       }
-      else{
-        console.log(`fetchWorkouts Response is not ok`)
+    catch(error) {
+        alert(`fetchWorkouts ERROR!`)
       }
-    }
-    catch(error){
-       alert(`fetchWorkouts ERROR!`)
-    }
-    
   }
 
-  useEffect(()=>{
-    fetchWorkouts() ;
-  }, [])
+  useEffect(() => {
+      fetchWorkouts() ;
+  }, [dispatch])
 
   return (
-    <div className="home">
-        <div className="workouts">
-          {workouts && workouts.map((workout) => (
-            <WorkoutDetails key={workout._id} workout={workout}/> // Here, key and workout are "props"
-          ))}
-        </div>
-        <WorkoutForm/>
-    </div>
-  )
+      <div className="home">
+          <div className="workouts">
+              {
+                workouts && workouts.map((workout) => {
+                  return (
+                    
+                    <WorkoutDetails key={workout._id} workout={workout}/> // Here, workout is a "props"
+
+                  )
+                })
+              }
+          </div>
+
+          <WorkoutForm/>
+          
+      </div>
+    )
 }
 
 export default Home 

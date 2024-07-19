@@ -1,5 +1,4 @@
 {
-  "proxy": "https://localhost:4000",
   "name": "frontend",
   "private": true,
   "version": "0.0.0",
@@ -11,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "date-fns": "^3.6.0",
+    "nodemon": "^3.1.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.24.1"

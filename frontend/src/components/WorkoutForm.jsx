@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useWorkoutContext } from '../context/WorkoutContext'
 
 const WorkoutForm = () => {
 
@@ -8,6 +9,8 @@ const WorkoutForm = () => {
         load:"",
     })
     const [error, setError] = useState(null)
+    const [emptyField, setEmptyFields] = useState([])
+
 
     const handleInput = async(e) => {
         const name = e.target.name
@@ -19,13 +22,14 @@ const WorkoutForm = () => {
         }))
     }
 
+    const { dispatch} = useWorkoutContext() ;
 
     // Creating New Workout
     const handleSubmit = async(event) => {
         event.preventDefault()
 
         try{
-            const response = await fetch(`/api/workouts`, {
+            const response = await fetch(`http://localhost:5000/api/workouts/create`, {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(workoutInfo),
@@ -34,16 +38,19 @@ const WorkoutForm = () => {
             const data = await response.json() 
 
             if(response.ok){
+                dispatch({type: "CREATE_WORKOUT", payload: data})
                 setWorkoutInfo({
                     title:"",
                     load:"",
                     reps:""
                 }) 
                 setError(null)
+                setEmptyFields([])
                 alert('Workout Successfully Added')
             }
             else{
                 setError(data.error)
+                setEmptyFields(data.emptyFields)
             }
         }
         catch(error){
@@ -65,6 +72,7 @@ const WorkoutForm = () => {
             required
             value={workoutInfo.title}
             onChange={handleInput}
+            className={emptyField.includes('title') ? "error" : "" }
         />
 
 
@@ -76,6 +84,7 @@ const WorkoutForm = () => {
             required
             value={workoutInfo.load}
             onChange={handleInput}
+            className={emptyField.includes('load') ? "error" : "" }
         />
 
 
@@ -87,6 +96,7 @@ const WorkoutForm = () => {
             required
             value={workoutInfo.reps}
             onChange={handleInput}
+            className={emptyField.includes('reps') ? "error" : "" }
         />
 
         <button className='btn'>Add Workout</button>

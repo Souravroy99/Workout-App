@@ -1,10 +1,15 @@
 const express = require('express');
 const router = express.Router(); 
 const work = require('../Controllers/workout-controller');
-const WorkoutMiddleware = require('../Middlewares/workout-middleware');
+const AuthMiddleware = require('../Middlewares/Auth-middleware')
+
+
+// This is the wall, like if this is properly passed then all other router will work
+router.use(AuthMiddleware)
+
 
 // Home route with middleware
-router.get('/', WorkoutMiddleware, work.home);
+router.get('/', work.home);
 
 // Create a new workout
 router.post('/create', work.createWorkout);

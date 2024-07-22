@@ -1,7 +1,4 @@
-const WorkoutModel = require('../Models/workout-model')
 const User = require('../Models/user-model')
-
-// install --> npm i validator and then delete this comment
 const validator = require('validator')
 
 
@@ -31,8 +28,8 @@ const signupUser = async(req,res) => {
 
         const createdUser = await User.create({email,password})
 
-        return res.status(200).json({   message: createdUser, 
-                                        token: await createdUser.generateToken(), 
+        return res.status(200).json({   message: createdUser,
+                                        token: await createdUser.generateToken(),
                                         userId: createdUser._id.toString()
                                    })
     }
@@ -48,7 +45,7 @@ const loginUser = async(req,res) => {
         const {email, password} = req.body ;
 
         if(!email || !password) {
-            throw Error("All fields must be filled")
+            res.status(400).json({message: "All fields must be filled"})
         }
 
         const userExists = await User.findOne({email: email}) ;
@@ -63,7 +60,7 @@ const loginUser = async(req,res) => {
             return res.status(201).json({   message: "User Successfully LoggedIn",
                                             token: await userExists.generateToken(),
                                             userId: userExists._id.toString()
-            })
+                                       })
         }
         else {
             res.status(401).json({error: 'Invalid Login Credentials!'})

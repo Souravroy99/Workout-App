@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
+import { useSignupHook } from "../hooks/useSignupHook"
 
 const Signup = () => {
 
@@ -6,6 +7,8 @@ const Signup = () => {
       email: "",
       password: ""
   })
+  
+  const { signup, isLoading, error } = useSignupHook()
 
   const handleInput = async(e) => {
       const name = e.target.name
@@ -20,14 +23,7 @@ const Signup = () => {
   const handleSubmit = async(e) => {
       e.preventDefault();
 
-      const response = await fetch(`http://localhost:5000/api/user/signup`, {
-          method: "POST",
-          headers:{'Content-Type': "application/json"},
-          body: JSON.stringify(credentials)
-      })
-
-      const data = response.json() 
-
+      await signup(credentials.email, credentials.password)
   }
 
   return (
@@ -55,12 +51,56 @@ const Signup = () => {
               onChange={handleInput}
         />
 
-        <button>Sign Up</button>
+        <button disabled={isLoading}>Sign Up</button>
+ 
+        { error && <div className="error">{error}</div> }
+
     </form>
-
-
 
   )
 }
 
 export default Signup
+
+
+
+
+
+// import { useState } from "react"
+// import { useSignupHook } from "../hooks/useSignupHook"
+
+// const Signup = () => {
+//   const [email, setEmail] = useState('')
+//   const [password, setPassword] = useState('')
+//   const {signup, error, isLoading} = useSignupHook()
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault()
+
+//     await signup(email, password)
+//   }
+
+//   return (
+//     <form className="signup" onSubmit={handleSubmit}>
+//       <h3>Sign Up</h3>
+      
+//       <label>Email address:</label>
+//       <input 
+//         type="email" 
+//         onChange={(e) => setEmail(e.target.value)} 
+//         value={email} 
+//       />
+//       <label>Password:</label>
+//       <input 
+//         type="password" 
+//         onChange={(e) => setPassword(e.target.value)} 
+//         value={password} 
+//       />
+
+//       <button disabled={isLoading}>Sign up</button>
+//       {error && <div className="error">{error}</div>}
+//     </form>
+//   )
+// }
+
+// export default Signup

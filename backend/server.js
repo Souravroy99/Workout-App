@@ -2,8 +2,8 @@ require('dotenv').config()
 
 const express = require('express')
 const app = express()
-const workRouter = require('./Routers/workout-router')
 const userRouter = require('./Routers/users-router')
+const workRouter = require('./Routers/workout-router')
 const Database = require('./Utils/Database')
 const cors = require('cors')
 
@@ -17,8 +17,8 @@ app.use(cors(corsOptions)) ;
 // Middleware to parse JSON bodies
 app.use(express.json())
 
-app.use('/api/workouts', workRouter)
 app.use('/api/user', userRouter) ;
+app.use('/api/workouts', workRouter)
    
 
 const Port = 5000

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
-const bcrypt = require('bcryptjs') // install and delete this comment
-const jwt = require('jsonwebtoken') // install and delete this comment
+const bcrypt = require('bcryptjs') 
+const jwt = require('jsonwebtoken') 
 
 const UserSchema = new mongoose.Schema({
     email:{
@@ -45,7 +45,7 @@ JWT Token -->
 
 UserSchema.methods.generateToken = async function(){
     return jwt.sign(
-            { userID: this_id.toString() },
+            { userID: this._id.toString() },
 
             process.env.JSON_SECRET_KEY,
 

@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import useLoginHook from "../hooks/useLoginHook"
+
 
 const Login = () => {
 
@@ -6,6 +8,7 @@ const Login = () => {
       email: "",
       password: ""
   })
+  const { loginFunc, isLoading, error }  = useLoginHook()
 
   const handleInput = async(e) => {
       const name = e.target.name
@@ -18,17 +21,9 @@ const Login = () => {
   }
 
   const handleSubmit = async(e) => {
-        e.preventDefault();
-
-
-      const response = await fetch(`http://localhost:5000/api/user/signup`, {
-          method: "POST",
-          headers:{'Content-Type': "application/json"},
-          body: JSON.stringify(credentials)
-      })
-
-      const data = response.json() 
-
+    e.preventDefault();
+    
+    await loginFunc(credentials.email, credentials.password)
   }
 
   return (
@@ -56,12 +51,13 @@ const Login = () => {
               onChange={handleInput}
         />
 
-        <button>Log In</button>
+        <button disabled={isLoading}>Log In</button>
         
+        { error && 
+            <div className="error">{error}</div>
+        }
+
     </form>
-
-
-
   )
 }
 

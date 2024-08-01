@@ -9,5 +9,5 @@ router.route('/login').post(userController.loginUser)
 // SignUp Router
 router.route('/signup').post(userController.signupUser)
 
-
-module.exports = router 
+ 
+module.exports = router;

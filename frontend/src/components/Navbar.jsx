@@ -1,19 +1,13 @@
 import { NavLink } from "react-router-dom"
-import useLogoutHook from "../hooks/useLogoutHook"
 import { AuthProvider } from "../context API/AuthContext"
 
 const Navbar = () => {
 
-  const { logout } = useLogoutHook()
   const { user } = AuthProvider()
-
-  const handleClick = () => {
-      logout()
-  }
 
   return (
     <header>
-        <div className="container">
+        <div className="container"> 
 
             <NavLink to='/'>
                 <h1>Workout Buddy</h1>
@@ -25,7 +19,7 @@ const Navbar = () => {
               ? (
                   <div>
                     <span>{user.email}</span>
-                    <button onClick={handleClick}>Log out</button>
+                    <button><NavLink to="/logout">Log Out</NavLink></button>
                   </div>
                 )
               : (

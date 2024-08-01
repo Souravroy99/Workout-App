@@ -14,9 +14,9 @@ const home = async(req, res) => {
 
 
 // 1 Create/Add a new workout
-const createWorkout = async(req,res) => {
+const createWorkout = async(req,res,next) => {
 
-    const {title, reps, load} = req.body 
+    const {title, reps, load} = req.body;
 
     let emptyFields = [] ;
     if(!title) emptyFields.push('title') ;
@@ -24,24 +24,24 @@ const createWorkout = async(req,res) => {
     if(!load) emptyFields.push('load') ;
 
     if(emptyFields.length > 0) {
-        res.status(400).json({error: `Please fill all the fields`, emptyFields})
+        res.status(400).json({error: `Please fill all the fields`, emptyFields});
     }
 
-    try{
-        const workOut = await WorkoutModel.create({title, reps, load})
+    try {
+        const workOut = await WorkoutModel.create({title, reps, load});
 
-        res.status(200).json(workOut) 
+        res.status(200).json(workOut); 
     }
-    catch(error){
-        console.log(`Auth-Controller CREATE_WORKOUT ERROR: ${error}`)
-        res.status(400).json({error: error.message}) 
-        // next(error)
+    catch(error) {
+        console.log(`Auth-Controller CREATE_WORKOUT ERROR: ${error}`);
+        res.status(400).json({error: error.message});
+        next(error);
     }
 }
 
 
 // 2 Fetch all the workouts
-const getAllWorkouts = async(req,res) => {
+const getAllWorkouts = async(req,res,next) => {
     try{
         const allWorkouts = await WorkoutModel.find().sort({createdAt: -1}) 
         res.status(200).json(allWorkouts) 
@@ -49,15 +49,16 @@ const getAllWorkouts = async(req,res) => {
     catch(error){
         console.log(`Auth-Controller GET_ALL_WORKOUTS ERROR: ${error}`)
         res.status(400).json({error: error.message})
-        // next(error)
+        next(error);
     }
 } 
 
 
 // 3 Fetch Workout By ID
-const getWorkoutById = async(req,res) => {
+const getWorkoutById = async(req,res,next) => {
     try{
-        const {id} = req.params 
+        const {id} = req.params;
+        console.log(id);
 
         // If the 'id' is invalid then for protection of mongodb, we need to verify that is the 'id' is mongodb type
         if(!mongoose.Types.ObjectId.isValid(id)) {
@@ -75,13 +76,13 @@ const getWorkoutById = async(req,res) => {
     catch(error){
         console.log(`Auth-Controller GET_WORKOUT_BY_ID ERROR: ${error}`)
         res.status(400).json({error: error.message})
-        // next(error)
+        next(error);
     }
 }
 
 
 // 4 Delete workout by ID
-const removeWorkoutById = async(req,res) => {
+const removeWorkoutById = async(req,res,next) => {
     try {
         const id = req.params.id 
         
@@ -95,13 +96,13 @@ const removeWorkoutById = async(req,res) => {
     catch(error) {
         console.log(`Auth-Controller REMOVE_WORKOUT_BY_ID ERROR: ${error}`)
         res.status(400).json({error: error.message})
-        // next(error)
+        next(error);
     }
 }
 
 
 // 5 Update Workout by Id
-const updateWorkoutById = async(req,res) => {
+const updateWorkoutById = async(req,res,next) => {
     try {
         const id = req.params.id 
         
@@ -118,7 +119,7 @@ const updateWorkoutById = async(req,res) => {
     catch(error) {
         console.log(`Auth-Controller UPDATE_WORKOUT_BY_ID ERROR: ${error}`)
         res.status(400).json({error: error.message})  
-        // next(error)
+        next(error);
     }
 }
 

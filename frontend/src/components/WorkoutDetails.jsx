@@ -1,12 +1,10 @@
 import formatDistanceToNow  from "date-fns/formatDistanceToNow"
-
 import { useWorkoutContext } from "../context API/WorkoutContext";
-import { AuthProvider } from "../context API/AuthContext";
 
 const WorkoutDetails = ({ workout }) => {
 
   const { dispatch } = useWorkoutContext() ;
-  const { user } = AuthProvider()
+  const user = JSON.parse(localStorage.getItem('user'));
 
   if(!user) {
     return ;
@@ -47,4 +45,4 @@ const WorkoutDetails = ({ workout }) => {
   )
 }
 
-export default WorkoutDetails
+export default WorkoutDetails;

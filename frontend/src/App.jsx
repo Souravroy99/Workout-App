@@ -3,6 +3,7 @@ import Home from './Pages/Home'
 import Navbar from './components/Navbar'
 import Login from './Pages/Login'
 import Signup from './Pages/Signup'
+import Logout from './Pages/Logout'
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
                   <Route path='/' element={<Home />}/>
                   <Route path='/login' element={<Login />} />
                   <Route path='/signup' element={<Signup />} />
+                  <Route path='/logout' element={<Logout />} />
                     
               </Routes>
           </div>

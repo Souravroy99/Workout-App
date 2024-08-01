@@ -5,7 +5,7 @@ const AuthMiddleware = require('../Middlewares/Auth-middleware')
 
 
 // This is the wall, like if this is properly passed then all other router will work
-router.use(AuthMiddleware)
+router.use(AuthMiddleware);
 
 
 // Home route with middleware
@@ -15,7 +15,7 @@ router.get('/', work.home);
 router.post('/create', work.createWorkout);
 
 // Fetch all workouts
-router.get('/all', work.getAllWorkouts);
+router.get('/getAll', work.getAllWorkouts);
 
 // Fetch single workout by Id
 router.get('/:id', work.getWorkoutById);

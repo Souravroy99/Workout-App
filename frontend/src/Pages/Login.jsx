@@ -8,7 +8,7 @@ const Login = () => {
       email: "",
       password: ""
   })
-  const { loginFunc, isLoading, error }  = useLoginHook()
+  const { loginFunc, isLoading, error }  = useLoginHook();
 
   const handleInput = async(e) => {
       const name = e.target.name
@@ -23,13 +23,13 @@ const Login = () => {
   const handleSubmit = async(e) => {
     e.preventDefault();
     
-    await loginFunc(credentials.email, credentials.password)
+    await loginFunc(credentials.email, credentials.password);
   }
 
   return (
 
     <form className='login' onSubmit={handleSubmit}>
-        <h3>Sign Up</h3>
+        <h3>Login</h3>
 
         <label htmlFor="email">Email: </label>
         <input 

@@ -4,9 +4,10 @@ import { useSignupHook } from "../hooks/useSignupHook"
 const Signup = () => {
 
   const [credentials, setCredentials] = useState({
-      email: "",
-      password: ""
-  })
+        username: "",
+        email: "",
+        password: ""
+  });
   
   const { signup, isLoading, error } = useSignupHook()
 
@@ -16,20 +17,30 @@ const Signup = () => {
 
       setCredentials((prev) => ({
           ...prev,
-          [name] : value
-      }))
+          [name] : value,
+      }));
   }
 
   const handleSubmit = async(e) => {
       e.preventDefault();
 
-      await signup(credentials.email, credentials.password)
+      await signup(credentials.username, credentials.email, credentials.password);
   }
 
   return (
 
     <form className='signup' onSubmit={handleSubmit}>
         <h3>Sign Up</h3>
+
+        <label htmlFor="username">Username</label>
+        <input 
+              type="text" 
+              name='username'
+              autoCapitalize='off'
+              required
+              value={credentials.username}
+              onChange={handleInput}
+        />
 
         <label htmlFor="email">Email</label>
         <input 

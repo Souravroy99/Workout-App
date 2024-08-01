@@ -1,39 +1,40 @@
-import { useState } from "react"
-import { AuthProvider } from "../context API/AuthContext"
-
+import { useState } from "react";
+import { AuthProvider } from "../context API/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export const useSignupHook = () => {
+  const [error, setError] = useState(null); 
+  const [isLoading, setIsLoading] = useState(null);
+  const { dispatch } = AuthProvider(); // Using AuthProvider
 
-    const [error, setError] = useState(null)
-    const [isLoading, setIsLoading] = useState(null)
-    const { dispatch } = AuthProvider()
+  const navigate = useNavigate();
 
-    const signup = async(email, password) => {
-        setError(null) 
-        setIsLoading(true)
+  const signup = async (username, email, password) => {
+    console.log(username, email, password);
 
-        const response = await fetch(`http://localhost:5000/api/user/signup`, {
-            method: "POST",
-            headers:{'Content-Type': "application/json"},
-            body: JSON.stringify({email, password})
-        })
+    setError(null);
+    setIsLoading(true);
 
-        const data = await response.json() 
+    const response = await fetch(`http://localhost:5000/api/user/signup`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, email, password }),
+    });
 
-        if(response.ok) {
-            // Save the user to local storage
-            localStorage.setItem('user', JSON.stringify(data))
+    const data = await response.json();
 
-            // Update the AuthContext.jsx
-            dispatch({type: "LOGIN", payload: data})
+    if (response.ok) {
+        localStorage.setItem("user", JSON.stringify(data));  // Save the user to local storage
 
-            setIsLoading(false)
-        }
-        else {
-            setIsLoading(false)
-            setError(data.error)
-        }
+        dispatch({ type: "LOGIN", payload: data });  // Update the AuthContext
+
+        navigate('/');
+    } 
+    else {
+      setError(data.error);
     }
+    setIsLoading(false);
+  };
 
-    return { signup, isLoading, error }
-}
+  return { signup, isLoading, error };
+};

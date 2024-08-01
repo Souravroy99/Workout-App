@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { useWorkoutContext } from "../context API/WorkoutContext"
-import { AuthProvider } from "../context API/AuthContext";
 
 
 const WorkoutForm = () => {
@@ -8,11 +7,11 @@ const WorkoutForm = () => {
     const [workoutInfo, setWorkoutInfo] = useState({
         title:"",
         reps:"",
-        load:"",
+        load:"", 
     })
     const [error, setError] = useState(null)
     const [emptyField, setEmptyFields] = useState([])
-    const { user } = AuthProvider()
+    const user  = JSON.parse(localStorage.getItem('user'));
 
     if(!user) {
         return alert("You must be logged in");
@@ -29,7 +28,7 @@ const WorkoutForm = () => {
         }))
     }
 
-    const { dispatch} = useWorkoutContext() ;
+    const { dispatch } = useWorkoutContext() ;
 
     // Creating New Workout
     const handleSubmit = async(event) => {
@@ -55,13 +54,13 @@ const WorkoutForm = () => {
                     load:"",
                     reps:""
                 }) 
-                setError(null)
-                setEmptyFields([])
-                alert('Workout Successfully Added')
+                setError(null);
+                setEmptyFields([]);
+                alert('Workout Successfully Added');
             }
             else{
-                setError(data.error)
-                setEmptyFields(data.emptyFields)
+                setError(data.error);
+                setEmptyFields(data.emptyFields);
             }
         }
         catch(error){

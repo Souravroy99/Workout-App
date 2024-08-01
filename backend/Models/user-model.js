@@ -1,38 +1,21 @@
-const mongoose = require('mongoose')
-const bcrypt = require('bcryptjs') 
-const jwt = require('jsonwebtoken') 
+const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
 
-const UserSchema = new mongoose.Schema({
-    email:{
+const UserSchema = new mongoose.Schema({ 
+    username: {
+        type: String,
+        required: true,
+    },
+    email: {
         type: String,
         required: true,
         unique: true,
     },
-    password:{
+    password: {
         type: String,
         required: true,
     }
-})
-
-
-// Secure the password with 'bcrypt'
-UserSchema.pre('save', async function(req, res, next){
-    if(!this.isModified(password)){
-        next()
-    }
-
-    try{
-        const salt = await bcrypt.genSalt(10)
-        const hash_password = await bcrypt.hash(this.password, salt)
-        this.password = hash_password
-    }
-    catch(error){
-        console.log(`Error in user-model.js 'pre'-function`)
-        alert(`Error in user-model.js 'pre'-function`)
-    }
-})
-
-
+}, {timestamps: true});
 
 // Generate JWT Token
 /*
@@ -42,24 +25,14 @@ JWT Token -->
     Signature ==> Used to verify the token by the server.
 */
 
-
-UserSchema.methods.generateToken = async function(){
+UserSchema.methods.generateToken = async function() {
     return jwt.sign(
-            { userID: this._id.toString() },
-
-            process.env.JSON_SECRET_KEY,
-
-            { expiresIn: '3d' }
-        )
+        { userID: this._id.toString() },
+        process.env.JWT_SECRET_KEY,
+        { expiresIn: '3d' }
+    );
 }
 
+const User = mongoose.model('users', UserSchema);
 
-// Compare Password Function
-UserSchema.methods.comparePassword = async function(){
-    return await bcrypt.compare(password, this.password)
-}
-
-
-const User = mongoose.model('users', UserSchema)
-
-module.exports = User
+module.exports = User;

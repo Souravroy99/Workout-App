@@ -3,7 +3,6 @@ import { AuthProvider } from "../context API/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 const useLoginHook = function () {
-    
   const { dispatch } = AuthProvider();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -30,9 +29,9 @@ const useLoginHook = function () {
         setError(data.error);
       }
     } catch (err) {
-        setError(err.error);
+      setError(err.error);
     } finally {
-        setIsLoading(false);
+      setIsLoading(false);
     }
   };
 

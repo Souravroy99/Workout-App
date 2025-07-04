@@ -19,7 +19,7 @@ const Home = () => {
         })
         
         const data = await response.json();
-        console.log(data);
+        console.log("Home.jsx: ", data);
         
         if(response.ok) {
             dispatch({type: "SET_WORKOUTS", payload: data});
@@ -40,14 +40,15 @@ const Home = () => {
   return (
       <div className="home">
           <div className="workouts">
-              {
-                workouts && workouts.map((workout) => {
+              {workouts 
+              ?
+                (<div>No Workout Created!</div>)
+              :
+                (workouts.map((workout) => {
                   return (
-                    
                     <WorkoutDetails key={workout._id} workout={workout}/> // Here, workout is a "props"
-
                   )
-                })
+                }))
               }
           </div>
 

@@ -3,7 +3,7 @@ import { AuthProvider } from "../context API/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 export const useSignupHook = () => {
-  const [error, setError] = useState(null); 
+  const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(null);
   const { dispatch } = AuthProvider(); // Using AuthProvider
 
@@ -24,13 +24,12 @@ export const useSignupHook = () => {
     const data = await response.json();
 
     if (response.ok) {
-        localStorage.setItem("user", JSON.stringify(data));  // Save the user to local storage
+      localStorage.setItem("user", JSON.stringify(data)); // Save the user to local storage
 
-        dispatch({ type: "LOGIN", payload: data });  // Update the AuthContext
+      dispatch({ type: "LOGIN", payload: data }); // Update the AuthContext
 
-        navigate('/');
-    } 
-    else {
+      navigate("/");
+    } else {
       setError(data.error);
     }
     setIsLoading(false);

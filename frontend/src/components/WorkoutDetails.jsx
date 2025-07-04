@@ -1,18 +1,24 @@
 import formatDistanceToNow  from "date-fns/formatDistanceToNow"
 import { useWorkoutContext } from "../context API/WorkoutContext";
+import { useNavigate } from 'react-router-dom';
 
 const WorkoutDetails = ({ workout }) => {
 
   const { dispatch } = useWorkoutContext() ;
   const user = JSON.parse(localStorage.getItem('user'));
+  const navigator = useNavigate();
+
+  const url = 'http://localhost:5000' ;
+  const url = '' ;
 
   if(!user) {
-    return ;
+    alert('You must be logged in') ;
+    return navigator('/login') ;
   }
 
   const handleRemove = async() => {
     try{
-      const response = await fetch(`http://localhost:5000/api/workouts/${workout._id}`,{
+      const response = await fetch(`${url}/api/workouts/${workout._id}`,{
         method: "DELETE",
         headers: {"Authorization": `Bearer ${user.token}`}
       })

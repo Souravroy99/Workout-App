@@ -35,7 +35,8 @@ const signupUser = async (req, res) => {
         const createdUser = await User.create({ username, email, password: hash_password });
 
         return res.status(200).json({ 
-            message: "User successfully created",
+            username: username,
+            email: email,
             token: await createdUser.generateToken(),
             userId: createdUser._id.toString()
         });
@@ -54,17 +55,19 @@ const loginUser = async (req, res) => {
             return res.status(400).json({ error: "All fields must be filled" });
         }
 
-        const userExists = await User.findOne({ email });
+        const userExists = await User.findOne({ email }) ;
 
         if (!userExists) {
             return res.status(401).json({ error: 'Invalid login credentials!' });
         }
+        console.log(userExists)
 
         const isValidPassword = await bcrypt.compare(password, userExists.password);
 
         if (isValidPassword) {
             return res.status(200).json({ 
-                message: "User successfully logged in",
+                username: userExists.username,
+                email: email,
                 token: await userExists.generateToken(),
                 userId: userExists._id.toString()
             });

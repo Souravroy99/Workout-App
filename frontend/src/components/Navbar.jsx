@@ -1,9 +1,9 @@
-import { NavLink } from "react-router-dom"
-import { AuthProvider } from "../context API/AuthContext"
+import { NavLink } from "react-router-dom";
+import { AuthProvider } from "../context API/AuthContext";
 
 const Navbar = () => {
 
-  const { user } = AuthProvider()
+  const { user, isLoggedIn } = AuthProvider();
 
   return (
     <header>
@@ -15,10 +15,10 @@ const Navbar = () => {
 
             <nav>
 
-              {user 
+              { isLoggedIn === true 
               ? (
                   <div>
-                    <span>{user.email}</span>
+                    <span>{user.username}</span>
                     <button><NavLink to="/logout">Log Out</NavLink></button>
                   </div>
                 )

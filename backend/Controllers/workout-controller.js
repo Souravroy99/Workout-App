@@ -57,7 +57,7 @@ const getAllWorkouts = async(req,res,next) => {
 // 3 Fetch Workout By ID
 const getWorkoutById = async(req,res,next) => {
     try{
-        const {id} = req.params;
+        const id = req.params.id ;
         console.log(id);
 
         // If the 'id' is invalid then for protection of mongodb, we need to verify that is the 'id' is mongodb type

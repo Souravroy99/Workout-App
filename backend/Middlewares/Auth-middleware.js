@@ -9,7 +9,7 @@ const AuthMiddleware = async (req, res, next) => {
     if (!Bearer_Token) {
         return res.status(401).json({ error: "Unauthorized HTTP, Token not provided or Invalid Token" });
     }
-
+ 
     const token = Bearer_Token.split(" ")[1];
 
     try {

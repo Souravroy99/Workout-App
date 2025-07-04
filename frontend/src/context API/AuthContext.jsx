@@ -13,10 +13,13 @@ const authReducer = (state, action) => {
 }
 
 // Step 2
-export const AuthContextProvider = (props) => {
+export const AuthContextProvider = ({children}) => {
 
     const initialState = {user: null}
-    const [state, dispatch] = useReducer(authReducer, initialState) 
+    const [state, dispatch] = useReducer(authReducer, initialState);
+
+    const isLoggedIn = !!state.user ;
+    const user = state.user ;
 
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem('user'));
@@ -24,7 +27,7 @@ export const AuthContextProvider = (props) => {
         if(user) {
             dispatch({type: "LOGIN", payload: user})
         }
-    }, [])
+    }, [dispatch]);
 
     const logout = () => {
         // Remove user from local storage
@@ -36,8 +39,8 @@ export const AuthContextProvider = (props) => {
 
 
     return (
-        <AuthContext.Provider value={{...state, dispatch, logout}}>
-            {props.children}
+        <AuthContext.Provider value={{...state, dispatch, user, logout, isLoggedIn}}>
+            {children}
         </AuthContext.Provider>
     ) 
 }
